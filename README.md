@@ -8,23 +8,6 @@ another VM or host.
 
 ------------------------------------------------------------------------
 
-## 📂 Project Structure
-
-    .
-    ├── LICENSE
-    ├── README.md
-    ├── setup_wazuh_agent.py
-    └── wazuh-agent-install.sh
-
--   **setup_wazuh_agent.py** → Python automation script (main
-    entrypoint).\
--   **wazuh-agent-install.sh** → Shell installer with placeholder
-    `WS_IP` replaced by Python.\
--   **README.md** → This documentation.\
--   **LICENSE** → Your license file.
-
-------------------------------------------------------------------------
-
 ## ⚙️ Prerequisites
 
 -   **Python 3.8+**
