@@ -5,7 +5,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 SCRIPT_PATH = BASE_DIR / "wazuh-agent-install.sh"
-print("\033[1;31m[!] Found script at: \033[0m", SCRIPT_PATH)
+print("\033[1;32m[!] Found script at: \033[0m", SCRIPT_PATH)
 
 SYSTEM = platform.system().lower()
 IS_WSL = "microsoft" in platform.uname().release.lower()
@@ -145,18 +145,17 @@ def main():
     wait_for_enter()
 
     run(f"{MULTIPASS} start {vmname}")
+    wsip=input("\n\033[1;31mEnter the Wazuh-Server IP : \033[0m")
+
+    text = SCRIPT_PATH.read_text()
+    text = text.replace("WS_IP", wsip)
+    SCRIPT_PATH.write_text(text)
+
     # run(f"multipass mount {BASE_DIR} {vmname}:/home/ubuntu/wazuh-agent", check=False) # Mount current dir to VM
-    run(f"multipass transfer {SCRIPT_PATH} {vmname}:/home/ubuntu/wazuh-agent-install.sh", check=False) # Transfer script to VM
+    run(f"multipass transfer {SCRIPT_PATH} {vmname}:/home/ubuntu/wazuh-agent-install.sh", check=False) # Transfer script to VM onetime
 
     print("\n\033[1;31mInstalling Wazuh-Agent...\033[0m")
     run(f"{MULTIPASS} exec {vmname} -- sudo bash wazuh-agent-install.sh", check=False)
-
-    wsip=input("\n\033[1;31mEnter the Wazuh-Server IP...\033[0m")
-    run(f"{MULTIPASS} exec {vmname} -- WAZUH_MANAGER=\"{wsip}\" sudo apt-get install wazuh-agent", check=False)
-
-    run(f"{MULTIPASS} exec {vmname} -- sudo systemctl daemon-reload", check=False)
-    run(f"{MULTIPASS} exec {vmname} -- sudo systemctl enable wazuh-agent", check=False)
-    run(f"{MULTIPASS} exec {vmname} -- sudo systemctl start wazuh-agent", check=False)
 
     print("\n\033[1;33mNow starting a shell session with your VM... Let's go!\033[0m")
     wait_for_enter()
