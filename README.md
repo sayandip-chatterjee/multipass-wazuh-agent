@@ -10,14 +10,25 @@ another VM or host.
 
 ## ⚙️ Prerequisites
 
--   **Python 3.8+**
--   **Multipass** installed on your host:
-    -   [Windows](https://multipass.run/download/windows)
-    -   [Linux](https://multipass.run/download/linux)
-    
--   A running **Wazuh Manager / Dashboard** (in another Multipass VM or
-    server).\
--   Open ports on the Wazuh Manager (default: `1514/udp`, `1515/tcp`).
+- OS : Ubuntu (tested on **22.04+**) _or_ Windows (tested on **Windows11**)
+- Interpreter/Runtime : **Python 3.8+** (MUST be installed in the system)
+- A running **Wazuh Manager / Dashboard** (in another Multipass VM or
+    agent).
+- Open ports on the Wazuh Manager (default: `1514/udp`, `1515/tcp`).
+
+------------------------------------------------------------------------
+
+## 📡 Architecture
+
+    +-------------------+             +-----------------------+
+    |   Wazuh Agent VM  |  <------->  |  Wazuh Manager /      |
+    | (Provisioned via  |   1514/1515 |  Dashboard VM/agent  |
+    |  Multipass)       |             |                       |
+    +-------------------+             +-----------------------+
+
+-   **Agent VM** is created by this script.\
+-   **Manager VM** should already be running Wazuh Dashboard.\
+-   Communication happens on ports `1514/udp` and `1515/tcp`.
 
 ------------------------------------------------------------------------
 
@@ -25,16 +36,31 @@ another VM or host.
 
 1.  Clone or copy this repository.
 
-    ``` bash
+    [LINUX] Clone the repository and run the setup script:
+    ```bash
     git clone https://github.com/sayandip-chatterjee/multipass-wazuh-agent.git
-    cd multipass-wazuh-agent
+    cd multipass-wazuh-agent/
     python3 setup_wazuh_agent.py
+    ```
+    
+    [WINDOWS] Ensure all the steps are done as mentioed:
+    ```bash
+    - In the Windows machine BIOS setup, make sure that virtualization is turned on
+    - Install git bash - https://git-scm.com/downloads/win and close the git bash window, do not clone yet.
+    - Install python3.8 from Microsoft Store
+    - Go to Windows Features from the Start Menu -> Search and make sure You enable the
+      "HyperV", "Virtual Machine Platform", and the "Windows Hypervisor Platform" to run the VM.
+    - Restart the machine.
+    - Open powershell (NOT AS Administrator)
+    - git clone https://github.com/sayandip-chatterjee/multipass-wazuh-agent.git
+    - cd multipass-wazuh-agent/
+    - python3 setup_wazuh_agent.py
     ```
 
 2.  Follow the prompts:
 
     -   Enter a **unique VM name** (e.g., `wazuh-agent1`).\
-    -   Enter the **Wazuh Server IP** (IP of your Wazuh Manager/Dashboard VM).\
+    -   Enter the **Wazuh agent IP** (IP of your Wazuh Manager/Dashboard VM).\
     -   The script:
         -   Verifies Multipass is installed.
         -   Checks required ports (`1514`, `1515`).
@@ -72,12 +98,14 @@ Check from the **Wazuh Dashboard** → Agents tab → your agent should appear a
 
 -   If you see:
 
-        ERROR: (4112): Invalid server address found: 'MANAGER_IP'
+        ERROR: (4112): Invalid agent address found: 'MANAGER_IP'
 
     → It means the placeholder wasn't replaced. Re-run `setup_wazuh_agent.py` and provide a valid IP.
     
-    → Investigate the issue of IP by `sudo cat /var/ossec/etc/ossec.conf | grep -A3 '<server>'`
+    → Investigate the issue of IP by `sudo cat /var/ossec/etc/ossec.conf | grep -A3 '<agent>'`
     
     → Verify whether the IP is replaced correctly or IP is valid or not!
+
+    → Check the logs `sudo tail -f /var/ossec/logs/ossec.log`
     
 -   If agent doesn't connect, make sure ports `1514/1515` are open on the Manager VM or check for possible firewall issues.
