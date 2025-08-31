@@ -15,6 +15,7 @@ another VM or host.
 - A running **Wazuh Manager / Dashboard** (in another Multipass VM or
     agent).
 - Open ports on the Wazuh Manager (default: `1514/udp`, `1515/tcp`).
+- Ensure that the wazuh-server and wazuh-agent versions are same.(Using 4.12 in this repo) 
 
 ------------------------------------------------------------------------
 
