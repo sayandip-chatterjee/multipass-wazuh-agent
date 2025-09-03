@@ -6,6 +6,8 @@ This project contains a Python automation script
 configure it to connect with a Wazuh Manager / Dashboard running on
 another VM or host.
 
+### ❌ THIS IS NOT WINDOWS AGENT !!!
+### ✅ THIS IS ONLY LINUX AGENT INSTALLED ON WINDOWS !!!
 ------------------------------------------------------------------------
 
 ## 📑 Table of Contents
