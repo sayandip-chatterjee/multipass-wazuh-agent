@@ -8,14 +8,15 @@ another VM or host.
 
 ------------------------------------------------------------------------
 
-## ⚙️ Prerequisites
+## 📑 Table of Contents
 
-- OS : Ubuntu (tested on **22.04+**) _or_ Windows (tested on **Windows11**)
-- Interpreter/Runtime : **Python 3.8+** (MUST be installed in the system)
-- A running **Wazuh Manager / Dashboard** (in another Multipass VM or
-    agent).
-- Open ports on the Wazuh Manager (default: `1514/udp`, `1515/tcp`).
-- Ensure that the wazuh-server and wazuh-agent versions are same.(Using 4.12 in this repo) 
+- [📡 Architecture](#-architecture)
+- [🛠️ Requirements](#️-requirements)
+- [📦 Installation & Usage](#-installation--usage)
+- [🔍 Verificationn](#-verification)
+- [⚠️ Notes](#-notes)
+- [🛠️ Troubleshooting](#-troubleshooting)
+- [🧹 Cleanup](#-cleanup)
 
 ------------------------------------------------------------------------
 
@@ -33,7 +34,18 @@ another VM or host.
 
 ------------------------------------------------------------------------
 
-## ▶️ Usage
+## 🛠️ Requirements
+
+- OS : Ubuntu (tested on **22.04+**) _or_ Windows (tested on **Windows11**)
+- Interpreter/Runtime : **Python 3.8+** (MUST be installed in the system)
+- A running **Wazuh Manager / Dashboard** (in another Multipass VM or
+    agent).
+- Open ports on the Wazuh Manager (default: `1514/udp`, `1515/tcp`).
+- Ensure that the wazuh-server and wazuh-agent versions are same.(Using 4.12 in this repo) 
+
+------------------------------------------------------------------------
+
+## 📦 Installation & Usage
 
 1.  Clone or copy this repository.
 
@@ -60,8 +72,8 @@ another VM or host.
 
 2.  Follow the prompts:
 
-    -   Enter a **unique VM name** (e.g., `wazuh-agent1`).\
-    -   Enter the **Wazuh agent IP** (IP of your Wazuh Manager/Dashboard VM).\
+    -   Enter a **unique VM name** (e.g., `wazuh-agent1`).
+    -   Enter the **Wazuh agent IP** (IP of your Wazuh Manager/Dashboard VM).
     -   The script:
         -   Verifies Multipass is installed.
         -   Checks required ports (`1514`, `1515`).
@@ -88,9 +100,9 @@ Check from the **Wazuh Dashboard** → Agents tab → your agent should appear a
 
 ## ⚠️ Notes
 
--   The script modifies `wazuh-agent-install.sh` **in-place** by replacing `WS_IP` with the IP you provide.\
--   If you want to keep a clean copy, back up the original script first.\
--   Works on **Linux** and **Windows** (with `multipass.exe` detection).\
+-   The script modifies `wazuh-agent-install.sh` **in-place** by replacing `WS_IP` with the IP you provide.
+-   If you want to keep a clean copy, back up the original script first.
+-   Works on **Linux** and **Windows** (with `multipass.exe` detection).
 -   Not recommended to run inside **WSL** (nested virtualization issues).
 
 ------------------------------------------------------------------------
@@ -110,3 +122,19 @@ Check from the **Wazuh Dashboard** → Agents tab → your agent should appear a
     → Check the logs `sudo tail -f /var/ossec/logs/ossec.log`
     
 -   If agent doesn't connect, make sure ports `1514/1515` are open on the Manager VM or check for possible firewall issues.
+
+------------------------------------------------------------------------
+
+## 🧹 Cleanup
+
+```bash
+multipass list
+multipass delete <NAME>
+multipass purge
+```
+
+In case you have accidentally deleted and not purged yet
+```
+multipass list
+multipass recover <NAME>
+```
