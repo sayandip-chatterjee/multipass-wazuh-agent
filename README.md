@@ -7,7 +7,7 @@ configure it to connect with a Wazuh Manager / Dashboard running on
 another VM or host.
 
 #### ❌ This is NOT WINDOWS AGENT !!!
-#### ✅ This is ONLY LINUX AGENT installed on WINDOWS !!!
+#### ✅ This is ONLY LINUX AGENT installed on WINDOWS / LINUX via MULTIPASS !!!
 ------------------------------------------------------------------------
 
 ## 📑 Table of Contents
